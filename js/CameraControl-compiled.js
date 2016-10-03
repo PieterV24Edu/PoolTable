@@ -1,14 +1,23 @@
-class CameraControl
-{
-    constructor()
-    {
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CameraControl = function () {
+    function CameraControl() {
+        _classCallCheck(this, CameraControl);
+
         var self = this;
         this.keyList = {};
-        $(document).keydown((e)=>{self.OnKeyDown(e)});
-        $(document).keyup((e)=>{self.OnKeyUp(e)});
+        $(document).keydown(function (e) {
+            self.OnKeyDown(e);
+        });
+        $(document).keyup(function (e) {
+            self.OnKeyUp(e);
+        });
         $(document).scroll(function (e) {
             e.preventDefault();
-
         });
 
         //ColorChange CameraRotPad
@@ -53,7 +62,6 @@ class CameraControl
         $("#dPad2").on("touchend mouseup mouseleave", function () {
             $(this).css("background-color", "#0000FF");
             self.SetKey("d", false);
-
         });
 
         //Dpad3
@@ -97,55 +105,59 @@ class CameraControl
         });
     }
 
-    OnKeyDown(e)
-    {
-        this.SetKey(this.KeyNormalizer(e.keyCode), true);
-    }
-
-    OnKeyUp(e)
-    {
-        this.SetKey(this.KeyNormalizer(e.keyCode), false);
-    }
-
-    SetKey(key, isPressed)
-    {
-        //only take valid outputs from keyNormalizer
-        if(key != null)
-        {
-            this.keyList[key] = isPressed;
+    _createClass(CameraControl, [{
+        key: "OnKeyDown",
+        value: function OnKeyDown(e) {
+            this.SetKey(this.KeyNormalizer(e.keyCode), true);
         }
-    }
-
-    GetKey(key)
-    {
-        return this.keyList[key];
-    }
-
-    KeyNormalizer(key)
-    {
-        switch(key)
-        {
-            //In case of up
-            case 38:
-                return "up";
-            //In case of left
-            case 37:
-                return "left";
-            //In case of right
-            case 39:
-                return "right";
-            //In case of down
-            case 40:
-                return "down";
-            //In case of a
-            case 65:
-                return "a";
-            //In case of d
-            case 68:
-                return "d";
-            //In case none of the above return null
-            default:
-                return null;
+    }, {
+        key: "OnKeyUp",
+        value: function OnKeyUp(e) {
+            this.SetKey(this.KeyNormalizer(e.keyCode), false);
         }
-    }
-}
+    }, {
+        key: "SetKey",
+        value: function SetKey(key, isPressed) {
+            //only take valid outputs from keyNormalizer
+            if (key != null) {
+                this.keyList[key] = isPressed;
+            }
+        }
+    }, {
+        key: "GetKey",
+        value: function GetKey(key) {
+            return this.keyList[key];
+        }
+    }, {
+        key: "KeyNormalizer",
+        value: function KeyNormalizer(key) {
+            switch (key) {
+                //In case of up
+                case 38:
+                    return "up";
+                //In case of left
+                case 37:
+                    return "left";
+                //In case of right
+                case 39:
+                    return "right";
+                //In case of down
+                case 40:
+                    return "down";
+                //In case of a
+                case 65:
+                    return "a";
+                //In case of d
+                case 68:
+                    return "d";
+                //In case none of the above return null
+                default:
+                    return null;
+            }
+        }
+    }]);
+
+    return CameraControl;
+}();
+
+//# sourceMappingURL=CameraControl-compiled.js.map

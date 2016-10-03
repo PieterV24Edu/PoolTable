@@ -1,11 +1,11 @@
 class PoolBall
 {
-    constructor(color, name)
+    constructor(name)
     {
         this.name = name;
         this.Radius = 2.85;
         this.Geometry = new THREE.SphereGeometry(this.Radius, 32, 32);
-        this.Material = new THREE.MeshPhongMaterial({color: color});
+        this.Material = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
         this.Mesh = new THREE.Mesh(this.Geometry, this.Material);
         this.Mesh.position.y = 2.85;
 
@@ -32,8 +32,9 @@ class PoolBall
             this.CheckColistion(0,0,-1, tableGroup, delta);
         //Move Ball
         this.Mesh.position.add(this.currentSpeed);
+        this.UpdateRotation();
         if(this.speed > 0.1)
-            this.speed -= (0.005 * this.speed);
+            this.speed -= ((0.35 * delta) * this.speed);
         else
             this.speed = 0;
     }
@@ -126,6 +127,20 @@ class PoolBall
             this.SetSpeed(thisBallSpeed);
             otherBall.SetSpeed(otherBallSpeed);
         }
+    }
+
+    UpdateRotation()
+    {
+        var distance = new THREE.Vector3().copy(this.currentSpeed).length();
+        var angle = (distance * (2*this.Radius*Math.PI)) * Math.PI;
+        var axis = new THREE.Vector3(-this.Direction.z, 0, this.Direction.x);
+
+        var quaternion = new THREE.Quaternion();
+        quaternion.setFromAxisAngle(axis, angle);
+        var curQuaternion = this.Mesh.quaternion;
+        curQuaternion.multiplyQuaternions(quaternion, curQuaternion);
+        curQuaternion.normalize();
+        this.Mesh.setRotationFromQuaternion(curQuaternion);
     }
 
     get mesh()

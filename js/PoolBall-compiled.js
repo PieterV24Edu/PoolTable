@@ -5,13 +5,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var PoolBall = function () {
-    function PoolBall(color, name) {
+    function PoolBall(name) {
         _classCallCheck(this, PoolBall);
 
         this.name = name;
         this.Radius = 2.85;
         this.Geometry = new THREE.SphereGeometry(this.Radius, 32, 32);
-        this.Material = new THREE.MeshPhongMaterial({ color: color });
+        this.Material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
         this.Mesh = new THREE.Mesh(this.Geometry, this.Material);
         this.Mesh.position.y = 2.85;
 
@@ -33,7 +33,8 @@ var PoolBall = function () {
             if (this.Direction.z > 0) this.CheckColistion(0, 0, 1, tableGroup, delta);else if (this.Direction.z < 0) this.CheckColistion(0, 0, -1, tableGroup, delta);
             //Move Ball
             this.Mesh.position.add(this.currentSpeed);
-            if (this.speed > 0.1) this.speed -= 0.005 * this.speed;else this.speed = 0;
+            this.UpdateRotation();
+            if (this.speed > 0.1) this.speed -= 0.35 * delta * this.speed;else this.speed = 0;
         }
     }, {
         key: "CheckColistion",
@@ -123,6 +124,20 @@ var PoolBall = function () {
                 this.SetSpeed(thisBallSpeed);
                 otherBall.SetSpeed(otherBallSpeed);
             }
+        }
+    }, {
+        key: "UpdateRotation",
+        value: function UpdateRotation() {
+            var distance = new THREE.Vector3().copy(this.currentSpeed).length();
+            var angle = distance * (2 * this.Radius * Math.PI) * Math.PI;
+            var axis = new THREE.Vector3(-this.Direction.z, 0, this.Direction.x);
+
+            var quaternion = new THREE.Quaternion();
+            quaternion.setFromAxisAngle(axis, angle);
+            var curQuaternion = this.Mesh.quaternion;
+            curQuaternion.multiplyQuaternions(quaternion, curQuaternion);
+            curQuaternion.normalize();
+            this.Mesh.setRotationFromQuaternion(curQuaternion);
         }
     }, {
         key: "mesh",

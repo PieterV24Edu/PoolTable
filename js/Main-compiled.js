@@ -1,15 +1,16 @@
-'use strict';
+"use strict";
 
 //1 unit = 1cm
 
 $(document).ready(function () {
     init();
-    animate();
 });
 
 var container;
 
-var camera, scene, renderer;
+var camera, scene, renderer, loader, textureManager;
+
+var myTextureArray = [];
 
 var cameraControl;
 
@@ -32,6 +33,8 @@ function init() {
     document.body.appendChild(container);
 
     cameraControl = new CameraControl();
+    textureManager = new THREE.LoadingManager();
+    loader = new THREE.TextureLoader(textureManager);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -41,9 +44,9 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.y = 210;
-    //camera.position.x = -100;
-    //camera.position.y = 200;
+    //camera.position.y = 210;
+    camera.position.x = -200;
+    camera.position.y = 100;
 
     scene = new THREE.Scene();
     clock = new THREE.Clock();
@@ -57,7 +60,7 @@ function init() {
 
     poolTable = new PoolTable();
 
-    ballArray = [new PoolBall(0xFFFFFF, 0), new PoolBall(0xDB7D3E, 1), new PoolBall(0xB350BC, 2), new PoolBall(0x6B8AC9, 3), new PoolBall(0xB1A627, 4), new PoolBall(0x000000, 5), new PoolBall(0x41AE38, 6), new PoolBall(0xD08499, 7), new PoolBall(0x404040, 8), new PoolBall(0x9AA1A1, 9), new PoolBall(0x2E6E89, 10), new PoolBall(0x7E3DB5, 11), new PoolBall(0x2E388D, 12), new PoolBall(0x4F321F, 13), new PoolBall(0x35461B, 14), new PoolBall(0x963430, 15)];
+    ballArray = [new PoolBall(0), new PoolBall(1), new PoolBall(2), new PoolBall(3), new PoolBall(4), new PoolBall(5), new PoolBall(6), new PoolBall(7), new PoolBall(8), new PoolBall(9), new PoolBall(10), new PoolBall(11), new PoolBall(12), new PoolBall(13), new PoolBall(14), new PoolBall(15)];
 
     playBallStart = new THREE.Vector2(0, 75);
     eightballstart = new THREE.Vector2(0, -87);
@@ -65,15 +68,24 @@ function init() {
     startPosArray = [[playBallStart.x, playBallStart.y], [0, -75], [-3, -81], [3, -81], [-6, -87], [eightballstart.x, eightballstart.y], [6, -87], [-9, -93], [-3, -93], [3, -93], [9, -93], [-12, -99], [-6, -99], [0, -99], [6, -99], [12, -99]];
 
     for (var i = 0; i < ballArray.length; i++) {
-        ballArray[i].position.set(startPosArray[i][0], 0, startPosArray[i][1]);
+        ballArray[i].position.set(startPosArray[i][0], 2.85, startPosArray[i][1]);
+        ballArray[i].mesh.rotation.z = 0.5 * Math.PI;
+        ballArray[i].mesh.rotation.y = -0.5 * Math.PI;
+        if (i >= 1 && i <= 15) ballArray[i].Material.map = loader.load("assets/textures/Ball" + i + ".png");
     }
 
-    for (var _i = 0; _i < ballArray.length; _i++) {
+    textureManager.onStart = function () {
+        for (var _i = 1; _i < ballArray; _i++) {
+            ballArray[_i].Material.map = loader.load("assets/textures/Ball" + _i + ".png");
+        }
+    };
+
+    for (var _i2 = 0; _i2 < ballArray.length; _i2++) {
         var tempArray = [];
-        for (var j = 0 + _i; j < ballArray.length; j++) {
+        for (var j = 0 + _i2; j < ballArray.length; j++) {
             tempArray[j] = false;
         }
-        collisionArray[_i] = tempArray;
+        collisionArray[_i2] = tempArray;
     }
 
     scene.add(amLight);
@@ -81,12 +93,15 @@ function init() {
 
     scene.add(poolTable.mesh);
 
-    for (var _i2 = 0; _i2 < ballArray.length; _i2++) {
-        scene.add(ballArray[_i2].mesh);
+    for (var _i3 = 0; _i3 < ballArray.length; _i3++) {
+        scene.add(ballArray[_i3].mesh);
     }
 
     window.addEventListener('resize', onWindowResize, false);
-    document.addEventListener('click', onClick);
+
+    textureManager.onLoad = function () {
+        animate();
+    };
 }
 
 function animate() {
@@ -102,16 +117,16 @@ function render() {
         ballArray[i].CalcMovement(clockDelta, poolTable.children);
     }
 
-    for (var _i3 = 0; _i3 < ballArray.length; _i3++) {
-        for (var j = _i3 + 1; j < ballArray.length; j++) {
-            if (collisionArray[_i3][j] == false) {
-                ballArray[_i3].BallCollision(ballArray[j]);
+    for (var _i4 = 0; _i4 < ballArray.length; _i4++) {
+        for (var j = _i4 + 1; j < ballArray.length; j++) {
+            if (collisionArray[_i4][j] == false) {
+                ballArray[_i4].BallCollision(ballArray[j]);
             }
-            collisionArray[_i3][j] = ballArray[_i3].CheckBallCollision(ballArray[j]);
+            collisionArray[_i4][j] = ballArray[_i4].CheckBallCollision(ballArray[j]);
         }
     }
 
-    //checkKeys();
+    checkKeys();
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     renderer.render(scene, camera);
@@ -127,21 +142,15 @@ function checkKeys() {
         var newRot = calcNewRot(camera.position.x, camera.position.z, -0.05, center);
         camera.position.set(newRot.x, camera.position.y, newRot.y);
     }
-    if (cameraControl.GetKey("up") == true) {
-        var newPos = calcNewScalarPos(camera.position.x, camera.position.z, 1.5, true);
-        camera.position.x = newPos.x;
-        camera.position.z = newPos.y;
+    if (cameraControl.GetKey("up")) {
+        if (camera.position.y < 200) camera.position.y += 5;
     }
-    if (cameraControl.GetKey("down") == true) {
-        var newPos = calcNewScalarPos(camera.position.x, camera.position.z, 1.5, false);
-        camera.position.x = newPos.x;
-        camera.position.z = newPos.y;
+    if (cameraControl.GetKey("down")) {
+        if (camera.position.y > 20) camera.position.y += -5;
     }
-    if (cameraControl.GetKey("plus")) {
-        camera.position.y += 5;
-    }
-    if (cameraControl.GetKey("minus")) {
-        camera.position.y += -5;
+
+    if (cameraControl.GetKey("a") && cameraControl.GetKey("d")) {
+        onClick();
     }
 }
 
@@ -149,18 +158,6 @@ function calcNewRot(x, y, rotation, center) {
     var center = new THREE.Vector2(center.x, center.y);
     var vector = new THREE.Vector2(x, y);
     vector.rotateAround(center, rotation);
-    return vector;
-}
-
-function calcNewScalarPos(x, z, scalar, moveToward) {
-    var vector = new THREE.Vector2(x, z);
-    if (moveToward) {
-        if (vector.x < 0 && vector.x + scalar < -1 && vector.x != 0) vector.x += scalar;else if (vector.x - scalar > 1 && vector.x != 0) vector.x -= scalar;
-        if (vector.y < 0 && vector.y + scalar < -1 && vector.y != 0) vector.y += scalar;else if (vector.y - scalar > 1 && vector.y != 0) vector.y -= scalar;
-    } else {
-        if (vector.x < 0 && vector.x - scalar < -1 && vector.x != 0) vector.x -= scalar;else if (vector.x + scalar > 1 && vector.x != 0) vector.x += scalar;
-        if (vector.y < 0 && vector.y - scalar < -1 && vector.y != 0) vector.y -= scalar;else if (vector.y + scalar > 1 && vector.y != 0) vector.y += scalar;
-    }
     return vector;
 }
 

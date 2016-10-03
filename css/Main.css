@@ -9,3 +9,71 @@ canvas
     height: 100%;
     display: block;
 }
+
+#dPadContainer
+{
+    width: 170px;
+    height: 115px;
+    background-color: #e0e0e0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.dPadItem
+{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+}
+
+.cameraRotPad
+{
+    background-color: #0000FF;
+}
+
+.ceuRotPad
+{
+    background-color: #FF0000;
+}
+
+.cameraHeightPad
+{
+    background-color: #00FF00;
+}
+
+#dPad1
+{
+    top: 5px;
+    left: 5px;
+}
+
+#dPad2
+{
+    top: 5px;
+    left: 115px;
+}
+
+#dPad3
+{
+    top: 60px;
+    left: 5px;
+}
+
+#dPad4
+{
+    top: 60px;
+    left: 115px;
+}
+
+#dPad5
+{
+    top: 5px;
+    left: 60px;
+}
+
+#dPad6
+{
+    top: 60px;
+    left: 60px;
+}

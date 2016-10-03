@@ -1,13 +1,13 @@
+"use strict";
+
 $(document).ready(function () {
     $(document).keydown(function (e) {
         console.log(KeyNormalizer(e.keyCode));
     });
 });
 
-function KeyNormalizer(key)
-{
-    switch(key)
-    {
+function KeyNormalizer(key) {
+    switch (key) {
         //In case of up
         case 38:
             return "up";
@@ -31,3 +31,5 @@ function KeyNormalizer(key)
             return null;
     }
 }
+
+//# sourceMappingURL=KeyListener-compiled.js.map

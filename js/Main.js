@@ -2,12 +2,13 @@
 
 $(document).ready(function () {
     init();
-    animate();
 });
 
 var container;
 
-var camera, scene, renderer;
+var camera, scene, renderer, loader, textureManager;
+
+var myTextureArray = [];
 
 var cameraControl;
 
@@ -27,6 +28,8 @@ function init() {
     document.body.appendChild(container);
 
     cameraControl = new CameraControl();
+    textureManager = new THREE.LoadingManager();
+    loader = new THREE.TextureLoader(textureManager);
 
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -36,9 +39,9 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.y = 210;
-    //camera.position.x = -100;
-    //camera.position.y = 200;
+    //camera.position.y = 210;
+    camera.position.x = -200;
+    camera.position.y = 100;
 
     scene = new THREE.Scene();
     clock = new THREE.Clock();
@@ -53,22 +56,22 @@ function init() {
     poolTable = new PoolTable();
 
     ballArray = [
-        new PoolBall(0xFFFFFF, 0),
-        new PoolBall(0xDB7D3E, 1),
-        new PoolBall(0xB350BC, 2),
-        new PoolBall(0x6B8AC9, 3),
-        new PoolBall(0xB1A627, 4),
-        new PoolBall(0x000000, 5),
-        new PoolBall(0x41AE38, 6),
-        new PoolBall(0xD08499, 7),
-        new PoolBall(0x404040, 8),
-        new PoolBall(0x9AA1A1, 9),
-        new PoolBall(0x2E6E89, 10),
-        new PoolBall(0x7E3DB5, 11),
-        new PoolBall(0x2E388D, 12),
-        new PoolBall(0x4F321F, 13),
-        new PoolBall(0x35461B, 14),
-        new PoolBall(0x963430, 15)
+        new PoolBall(0),
+        new PoolBall(1),
+        new PoolBall(2),
+        new PoolBall(3),
+        new PoolBall(4),
+        new PoolBall(5),
+        new PoolBall(6),
+        new PoolBall(7),
+        new PoolBall(8),
+        new PoolBall(9),
+        new PoolBall(10),
+        new PoolBall(11),
+        new PoolBall(12),
+        new PoolBall(13),
+        new PoolBall(14),
+        new PoolBall(15)
     ];
 
     playBallStart = new THREE.Vector2(0, 75);
@@ -85,8 +88,19 @@ function init() {
 
     for(let i = 0; i < ballArray.length; i++)
     {
-        ballArray[i].position.set(startPosArray[i][0],0,startPosArray[i][1]);
+        ballArray[i].position.set(startPosArray[i][0],2.85,startPosArray[i][1]);
+        ballArray[i].mesh.rotation.z = 0.5*Math.PI;
+        ballArray[i].mesh.rotation.y = -0.5*Math.PI;
+        if(i >= 1 && i <= 15)
+            ballArray[i].Material.map = loader.load("assets/textures/Ball" + i + ".png");
     }
+
+    textureManager.onStart = function () {
+        for(let i = 1; i < ballArray; i++)
+        {
+            ballArray[i].Material.map = loader.load("assets/textures/Ball" + i + ".png");
+        }
+    };
 
     for(let i = 0; i < ballArray.length; i++)
     {
@@ -109,7 +123,10 @@ function init() {
     }
 
     window.addEventListener('resize', onWindowResize, false);
-    document.addEventListener('click', onClick);
+
+    textureManager.onLoad = function () {
+        animate();
+    };
 }
 
 function animate() {
@@ -138,7 +155,7 @@ function render() {
         }
     }
 
-    //checkKeys();
+    checkKeys();
     camera.lookAt(new THREE.Vector3(0,0,0));
 
     renderer.render(scene, camera);
@@ -156,25 +173,20 @@ function checkKeys() {
         var newRot = calcNewRot(camera.position.x, camera.position.z, -0.05, center);
         camera.position.set(newRot.x, camera.position.y, newRot.y);
     }
-    if(cameraControl.GetKey("up") == true)
+    if(cameraControl.GetKey("up"))
     {
-        var newPos = calcNewScalarPos(camera.position.x, camera.position.z, 1.5, true);
-        camera.position.x = newPos.x;
-        camera.position.z = newPos.y;
+        if(camera.position.y < 200)
+            camera.position.y += 5;
     }
-    if(cameraControl.GetKey("down") == true)
+    if(cameraControl.GetKey("down"))
     {
-        var newPos = calcNewScalarPos(camera.position.x, camera.position.z, 1.5, false);
-        camera.position.x = newPos.x;
-        camera.position.z = newPos.y;
+        if(camera.position.y > 20)
+            camera.position.y += -5;
     }
-    if(cameraControl.GetKey("plus"))
+
+    if(cameraControl.GetKey("a") && cameraControl.GetKey("d"))
     {
-        camera.position.y += 5;
-    }
-    if(cameraControl.GetKey("minus"))
-    {
-        camera.position.y += -5;
+        onClick();
     }
 }
 
@@ -182,33 +194,6 @@ function calcNewRot(x,y, rotation, center){
     var center = new THREE.Vector2(center.x,center.y);
     var vector = new THREE.Vector2(x,y);
     vector.rotateAround(center, rotation);
-    return vector;
-}
-
-function calcNewScalarPos(x,z,scalar, moveToward) {
-    var vector = new THREE.Vector2(x, z);
-    if(moveToward)
-    {
-        if(vector.x < 0 && vector.x + scalar < -1 && vector.x != 0)
-            vector.x += scalar;
-        else if(vector.x - scalar > 1 && vector.x != 0)
-            vector.x -= scalar;
-        if(vector.y < 0 && vector.y + scalar < -1 && vector.y != 0)
-            vector.y += scalar;
-        else if(vector.y - scalar > 1 && vector.y != 0)
-            vector.y -= scalar;
-    }
-    else
-    {
-        if(vector.x < 0 && vector.x - scalar < -1 && vector.x != 0)
-            vector.x -= scalar;
-        else if(vector.x + scalar> 1 && vector.x != 0)
-            vector.x += scalar;
-        if(vector.y < 0 && vector.y - scalar < -1 && vector.y != 0)
-            vector.y -= scalar;
-        else if(vector.y + scalar > 1 && vector.y != 0)
-            vector.y += scalar;
-    }
     return vector;
 }
 

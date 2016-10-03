@@ -1,9 +1,7 @@
 class PlayBall extends PoolBall
 {
-    constructor(color, name)
+    constructor(name)
     {
-        super(color, name);
+        super(name);
     }
-
-
 }

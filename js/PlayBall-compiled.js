@@ -9,10 +9,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PlayBall = function (_PoolBall) {
     _inherits(PlayBall, _PoolBall);
 
-    function PlayBall(color, name) {
+    function PlayBall(name) {
         _classCallCheck(this, PlayBall);
 
-        return _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, color, name));
+        return _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, name));
     }
 
     return PlayBall;
