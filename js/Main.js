@@ -14,7 +14,7 @@ var cameraControl;
 
 var clock;
 
-var poolTable, ballArray, playBallStart = 75, eightballstart;
+var poolTable, ballArray, playBallStart, eightballstart;
 var startPosArray;
 var collisionArray = [];
 
@@ -56,54 +56,48 @@ function init() {
     poolTable = new PoolTable();
 
     ballArray = [
-        new PoolBall(0),
-        new PoolBall(1),
-        new PoolBall(2),
-        new PoolBall(3),
-        new PoolBall(4),
-        new PoolBall(5),
-        new PoolBall(6),
-        new PoolBall(7),
-        new PoolBall(8),
-        new PoolBall(9),
-        new PoolBall(10),
-        new PoolBall(11),
-        new PoolBall(12),
-        new PoolBall(13),
-        new PoolBall(14),
-        new PoolBall(15)
+        new PlayBall(0),
+        new PoolBall(1, 1),
+        new PoolBall(2, 1),
+        new PoolBall(3, 1),
+        new PoolBall(4, 1),
+        new PoolBall(5, 1),
+        new PoolBall(6, 1),
+        new PoolBall(7, 1),
+        new PoolBall(8, 8),
+        new PoolBall(9, 2),
+        new PoolBall(10, 2),
+        new PoolBall(11, 2),
+        new PoolBall(12, 2),
+        new PoolBall(13, 2),
+        new PoolBall(14, 2),
+        new PoolBall(15, 2)
     ];
 
     playBallStart = new THREE.Vector2(0, 75);
     eightballstart = new THREE.Vector2(0, -87);
 
     startPosArray = [
-        [playBallStart.x, playBallStart.y],
-        [0,-75],
+        /*[0, 0],*/
+        [0, -75],
         [-3, -81],[3, -81],
-        [-6, -87],[eightballstart.x, eightballstart.y],[6, -87],
-        [-9, -93],[-3, -93],[3, -93],[9, -93],
+        [-6, -87],/*[0, 0],*/[6, -87],
+        [-9, -93],[3, -93],[-3, -93],[9, -93],
         [-12, -99],[-6, -99],[0, -99],[6, -99],[12, -99]
     ];
 
+    setBallPositions();
+
     for(let i = 0; i < ballArray.length; i++)
     {
-        ballArray[i].position.set(startPosArray[i][0],2.85,startPosArray[i][1]);
+        //Set Correct rotation
         ballArray[i].mesh.rotation.z = 0.5*Math.PI;
         ballArray[i].mesh.rotation.y = -0.5*Math.PI;
+        //Add Textures
         if(i >= 1 && i <= 15)
             ballArray[i].Material.map = loader.load("assets/textures/Ball" + i + ".png");
-    }
 
-    textureManager.onStart = function () {
-        for(let i = 1; i < ballArray; i++)
-        {
-            ballArray[i].Material.map = loader.load("assets/textures/Ball" + i + ".png");
-        }
-    };
-
-    for(let i = 0; i < ballArray.length; i++)
-    {
+        //Populate collision array
         var tempArray = [];
         for(let j = 0 + i; j < ballArray.length; j++)
         {
@@ -195,6 +189,43 @@ function calcNewRot(x,y, rotation, center){
     var vector = new THREE.Vector2(x,y);
     vector.rotateAround(center, rotation);
     return vector;
+}
+
+function setBallPositions() {
+    var fullCornerSet = false;
+    var halfCornerSet = false;
+    var indexArray = [1,2,3,4,5,6,7,8,10,11,12];
+    var ballIndexArray = [2,3,4,5,6,7,9,10,11,12,13,14,15];
+
+    ballArray[0].SetPosition(playBallStart.x, playBallStart.y);
+    ballArray[1].SetPosition(startPosArray[0][0], startPosArray[0][1]);
+    ballArray[8].SetPosition(eightballstart.x, eightballstart.y);
+
+    while(indexArray.length > 0 && ballIndexArray.length > 0)
+    {
+        //Select random ball
+        var ranBallIndex = Math.floor(Math.random() * ballIndexArray.length);
+        var ballIndex = ballIndexArray[ranBallIndex];
+        if(ballArray[ballIndex].type == 1 && !fullCornerSet)
+        {
+            ballArray[ballIndex].SetPosition(startPosArray[9][0], startPosArray[9][1]);
+            fullCornerSet = true;
+        }
+        else if(ballArray[ballIndex].type == 2 && !halfCornerSet)
+        {
+            ballArray[ballIndex].SetPosition(startPosArray[13][0], startPosArray[13][1]);
+            halfCornerSet = true;
+        }
+        else
+        {
+            var ranPosIndex = Math.floor(Math.random() * ballIndexArray.length);
+            var posIndex = indexArray[ranPosIndex];
+            indexArray.splice(ranPosIndex, 1);
+
+            ballArray[ballIndex].SetPosition(startPosArray[posIndex][0], startPosArray[posIndex][1]);
+        }
+        ballIndexArray.splice(ranBallIndex, 1);
+    }
 }
 
 function onWindowResize() {
