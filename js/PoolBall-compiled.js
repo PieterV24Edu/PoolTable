@@ -129,7 +129,7 @@ var PoolBall = function () {
         key: "UpdateRotation",
         value: function UpdateRotation() {
             var distance = new THREE.Vector3().copy(this.currentSpeed).length();
-            var angle = distance * (2 * this.Radius * Math.PI) * Math.PI;
+            var angle = 2 * this.Radius / Math.PI / distance * Math.PI;
             var axis = new THREE.Vector3(-this.Direction.z, 0, this.Direction.x);
 
             var quaternion = new THREE.Quaternion();
