@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     $(document).keydown(function (e) {
-        console.log(KeyNormalizer(e.keyCode));
+        console.log(e.keyCode);
     });
 });
 

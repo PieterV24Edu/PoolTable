@@ -10,9 +10,7 @@ var container;
 
 var camera, scene, renderer, loader, textureManager;
 
-var myTextureArray = [];
-
-var cameraControl;
+var keyboardControl;
 
 var clock;
 
@@ -29,7 +27,7 @@ function init() {
     container = document.createElement("div");
     document.body.appendChild(container);
 
-    cameraControl = new CameraControl();
+    keyboardControl = new Control();
     textureManager = new THREE.LoadingManager();
     loader = new THREE.TextureLoader(textureManager);
 
@@ -41,7 +39,6 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    //camera.position.y = 210;
     camera.position.x = -200;
     camera.position.y = 100;
 
@@ -69,9 +66,6 @@ function init() {
     setBallPositions();
 
     for (var i = 0; i < ballArray.length; i++) {
-        //Set Correct rotation
-        ballArray[i].mesh.rotation.z = 0.5 * Math.PI;
-        ballArray[i].mesh.rotation.y = -0.5 * Math.PI;
         //Add Textures
         if (i >= 1 && i <= 15) ballArray[i].Material.map = loader.load("assets/textures/Ball" + i + ".png");
 
@@ -88,7 +82,9 @@ function init() {
 
     scene.add(poolTable.mesh);
 
-    for (var _i = 0; _i < ballArray.length; _i++) {
+    scene.add(ballArray[0].mesh);
+    scene.add(ballArray[0].ceuMesh);
+    for (var _i = 1; _i < ballArray.length; _i++) {
         scene.add(ballArray[_i].mesh);
     }
 
@@ -129,22 +125,22 @@ function render() {
 
 function checkKeys() {
     var center = new THREE.Vector3(0, 0, 0);
-    if (cameraControl.GetKey("left") == true) {
+    if (keyboardControl.GetKey("left") == true) {
         var newRot = calcNewRot(camera.position.x, camera.position.z, 0.05, center);
         camera.position.set(newRot.x, camera.position.y, newRot.y);
     }
-    if (cameraControl.GetKey("right") == true) {
+    if (keyboardControl.GetKey("right") == true) {
         var newRot = calcNewRot(camera.position.x, camera.position.z, -0.05, center);
         camera.position.set(newRot.x, camera.position.y, newRot.y);
     }
-    if (cameraControl.GetKey("up")) {
+    if (keyboardControl.GetKey("up")) {
         if (camera.position.y < 200) camera.position.y += 5;
     }
-    if (cameraControl.GetKey("down")) {
+    if (keyboardControl.GetKey("down")) {
         if (camera.position.y > 20) camera.position.y += -5;
     }
 
-    if (cameraControl.GetKey("a") && cameraControl.GetKey("d")) {
+    if (keyboardControl.GetKey("space")) {
         onClick();
     }
 }
@@ -170,6 +166,9 @@ function setBallPositions() {
         //Select random ball
         var ranBallIndex = Math.floor(Math.random() * ballIndexArray.length);
         var ballIndex = ballIndexArray[ranBallIndex];
+        console.log(ballIndexArray);
+        console.log("RandBall: " + ranBallIndex);
+        console.log("Ball: " + ballIndex);
         if (ballArray[ballIndex].type == 1 && !fullCornerSet) {
             ballArray[ballIndex].SetPosition(startPosArray[9][0], startPosArray[9][1]);
             fullCornerSet = true;
@@ -177,9 +176,12 @@ function setBallPositions() {
             ballArray[ballIndex].SetPosition(startPosArray[13][0], startPosArray[13][1]);
             halfCornerSet = true;
         } else {
-            var ranPosIndex = Math.floor(Math.random() * ballIndexArray.length);
+            var ranPosIndex = Math.floor(Math.random() * indexArray.length);
             var posIndex = indexArray[ranPosIndex];
             indexArray.splice(ranPosIndex, 1);
+            console.log(indexArray);
+            console.log("RandIndex: " + ranPosIndex);
+            console.log("Position: " + posIndex);
 
             ballArray[ballIndex].SetPosition(startPosArray[posIndex][0], startPosArray[posIndex][1]);
         }

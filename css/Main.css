@@ -20,6 +20,16 @@ canvas
     right: 0;
 }
 
+#shootContainter
+{
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    background-color: #e0e0e0;
+    bottom: 0;
+    left: 0;
+}
+
 .dPadItem
 {
     width: 50px;
@@ -76,4 +86,11 @@ canvas
 {
     top: 60px;
     left: 60px;
+}
+
+#shootButton
+{
+    top: 5px;
+    left: 5px;
+    background-color: #FF0000;
 }

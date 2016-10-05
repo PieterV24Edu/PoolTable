@@ -2,99 +2,19 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/_getData-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/sortBy-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/sum-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/bl/bl-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/_baseRepeat-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/slash/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/ms/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/zip-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/_baseHasIn-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/flatMapDeep-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/aws4/aws4-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/_addSetEntry-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/keyBy-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/keysIn-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/toLength-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/PoolBall-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/jsesc/jsesc-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/subtract-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/glob/common-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/nth-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
         <item url="file://$PROJECT_DIR$/js/PlayBall-compiled.js" />
         <item url="file://$PROJECT_DIR$/js/Ball-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/pullAt-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/sntp/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/gt-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/once/once-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/core.min-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/pify/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/glob/sync-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/_Promise-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/debug/node-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/isArguments-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/glob/glob-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/pull-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/debug/browser-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/chalk/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/CameraControl-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/attempt-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/KeyListener-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/aws4/lru-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/lodash/_Set-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-        <item url="file://$PROJECT_DIR$/node_modules/debug/debug-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
         <item url="file://$PROJECT_DIR$/js/Main-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/PoolTable-compiled.js" />
+        <item url="file://$PROJECT_DIR$/js/KeyListener-compiled.js" />
+        <item url="file://$PROJECT_DIR$/js/CameraControl-compiled.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/js/PoolBall-MSI-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/PoolBall-compiled-MSI-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/_getData-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/sortBy-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/sum-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/bl/bl-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/_baseRepeat-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/slash/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/ms/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/zip-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/_baseHasIn-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/flatMapDeep-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/aws4/aws4-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/_addSetEntry-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/keyBy-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/keysIn-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/toLength-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/PoolBall-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/jsesc/jsesc-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/subtract-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/glob/common-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/nth-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
       <root url="file://$PROJECT_DIR$/js/PlayBall-compiled.js" />
       <root url="file://$PROJECT_DIR$/js/Ball-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/pullAt-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/sntp/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/gt-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/once/once-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/core.min-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/pify/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/glob/sync-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/_Promise-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/debug/node-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/isArguments-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/glob/glob-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/pull-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/debug/browser-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/chalk/index-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/CameraControl-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/attempt-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/KeyListener-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/aws4/lru-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/lodash/_Set-compiled-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/node_modules/debug/debug-compiled-compiled-compiled-compiled-compiled-compiled-compiled.js" />
       <root url="file://$PROJECT_DIR$/js/Main-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/PoolTable-compiled.js" />
+      <root url="file://$PROJECT_DIR$/js/KeyListener-compiled.js" />
+      <root url="file://$PROJECT_DIR$/js/Control-compiled.js" />
     </CLASSES>
     <SOURCES />
   </library>

@@ -8,12 +8,15 @@ class Ball
         this.Material = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
         this.Mesh = new THREE.Mesh(this.Geometry, this.Material);
         this.Mesh.position.y = 2.85;
+        this.Mesh.rotation.z = 0.5*Math.PI;
+        this.Mesh.rotation.y = 0.5*Math.PI;
 
         this.Direction = new THREE.Vector3(0,0,0);
         this.Direction.normalize();
         this.speed = 0;
         this.currentSpeed = new THREE.Vector3();
         this.Mesh.castShadow = true;
+        this.Mesh.receiveShadow = true;
 
         this.rayCaster = new THREE.Raycaster();
     }
