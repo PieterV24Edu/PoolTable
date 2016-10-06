@@ -36,7 +36,7 @@ class Ball
         //Move Ball
         this.Mesh.position.add(this.currentSpeed);
         this.UpdateRotation();
-        if(this.speed > 0.1)
+        if(this.speed > 0.5)
             this.speed -= ((0.35 * delta) * this.speed);
         else
             this.speed = 0;

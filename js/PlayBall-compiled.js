@@ -18,17 +18,52 @@ var PlayBall = function (_Ball) {
 
         var _this = _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, name));
 
-        _this.CeuLenght = 150;
+        _this.CeuLenght = 100;
         _this.CeuMaterial = new THREE.MeshLambertMaterial({ color: 0x800000 });
         _this.CeuGeo = new THREE.CylinderGeometry(0.5, 1.5, _this.CeuLenght, 32);
         _this.CeuMesh = new THREE.Mesh(_this.CeuGeo, _this.CeuMaterial);
+
+        _this.PowerCubeMat = new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 10 });
+        _this.PowerCubeGeo = new THREE.BoxGeometry(2.5, 20, 2.5);
+        _this.PowerCube = new THREE.Mesh(_this.PowerCubeGeo, _this.PowerCubeMat);
+
         _this.ceu = new THREE.Object3D();
         _this.ceu.add(_this.CeuMesh);
+        _this.ceu.add(_this.PowerCube);
         _this.ceu.position.set(_this.Mesh.position.x, _this.Mesh.position.y, _this.Mesh.position.z);
+
+        _this.CeuMesh.rotation.x = -95 * Math.PI / 180;
+        _this.CeuMesh.position.z = Math.cos(5 * Math.PI / 180) * (_this.CeuLenght + _this.Radius + 10 + _this.Radius) / 2;
+        _this.CeuMesh.position.y = Math.sin(5 * Math.PI / 180) * (_this.CeuLenght + _this.Radius + 10 + _this.Radius) / 2;
+
+        _this.PowerCube.position.y = 15;
+
+        _this.CeuDirection = new THREE.Vector2(0, -1);
         return _this;
     }
 
     _createClass(PlayBall, [{
+        key: "SetVisibility",
+        value: function SetVisibility(state) {
+            this.ceu.visible = state;
+        }
+    }, {
+        key: "CheckKeys",
+        value: function CheckKeys(controller) {
+            if (this.ceu.visible) {
+                var rot = 1 * Math.PI / 180;
+                if (controller.GetKey("a")) {
+                    this.ceu.rotateY(rot);
+                    this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), -rot);
+                }
+                if (controller.GetKey("d")) {
+                    this.ceu.rotateY(-rot);
+                    this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), rot);
+                }
+                if (controller.GetKey("space")) {}
+            }
+        }
+    }, {
         key: "SetPosition",
         value: function SetPosition(x, z) {
             _get(PlayBall.prototype.__proto__ || Object.getPrototypeOf(PlayBall.prototype), "SetPosition", this).call(this, x, z);
@@ -39,6 +74,12 @@ var PlayBall = function (_Ball) {
         value: function CalcMovement(delta, tableGroup) {
             _get(PlayBall.prototype.__proto__ || Object.getPrototypeOf(PlayBall.prototype), "CalcMovement", this).call(this, delta, tableGroup);
             this.ceu.position.add(this.currentSpeed);
+        }
+    }, {
+        key: "StartMoving",
+        value: function StartMoving(direction, speed) {
+            this.SetDirection(direction.x, direction.y);
+            this.speed = speed;
         }
     }, {
         key: "ceuMesh",

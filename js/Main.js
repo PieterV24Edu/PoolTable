@@ -146,6 +146,15 @@ function render() {
     }
 
     checkKeys();
+    if(checkMovingBalls())
+    {
+        ballArray[0].SetVisibility(false);
+    }
+    else
+    {
+        ballArray[0].SetVisibility(true);
+        ballArray[0].CheckKeys(keyboardControl);
+    }
     camera.lookAt(new THREE.Vector3(0,0,0));
 
     renderer.render(scene, camera);
@@ -173,11 +182,6 @@ function checkKeys() {
         if(camera.position.y > 20)
             camera.position.y += -5;
     }
-
-    if(keyboardControl.GetKey("space"))
-    {
-        onClick();
-    }
 }
 
 function calcNewRot(x,y, rotation, center){
@@ -185,6 +189,15 @@ function calcNewRot(x,y, rotation, center){
     var vector = new THREE.Vector2(x,y);
     vector.rotateAround(center, rotation);
     return vector;
+}
+
+function checkMovingBalls() {
+    for(let i = 0; i < ballArray.length; i++)
+    {
+        if(ballArray[i].speed > 0)
+            return true;
+    }
+    return false;
 }
 
 function setBallPositions() {
@@ -202,9 +215,6 @@ function setBallPositions() {
         //Select random ball
         var ranBallIndex = Math.floor(Math.random() * ballIndexArray.length);
         var ballIndex = ballIndexArray[ranBallIndex];
-        console.log(ballIndexArray);
-        console.log("RandBall: " + ranBallIndex);
-        console.log("Ball: " + ballIndex);
         if(ballArray[ballIndex].type == 1 && !fullCornerSet)
         {
             ballArray[ballIndex].SetPosition(startPosArray[9][0], startPosArray[9][1]);
@@ -220,9 +230,6 @@ function setBallPositions() {
             var ranPosIndex = Math.floor(Math.random() * indexArray.length);
             var posIndex = indexArray[ranPosIndex];
             indexArray.splice(ranPosIndex, 1);
-            console.log(indexArray);
-            console.log("RandIndex: " + ranPosIndex);
-            console.log("Position: " + posIndex);
 
             ballArray[ballIndex].SetPosition(startPosArray[posIndex][0], startPosArray[posIndex][1]);
         }
@@ -241,6 +248,6 @@ function onWindowResize() {
 }
 
 function  onClick() {
-    ballArray[0].SetDirection(0,-1);
+    ballArray[0].SetDirection(ballArray[0].CeuDirection.x, ballArray[0].CeuDirection.y);
     ballArray[0].SetSpeed(200);
 }
