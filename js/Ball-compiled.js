@@ -28,8 +28,8 @@ var Ball = function () {
     }
 
     _createClass(Ball, [{
-        key: "CalcMovement",
-        value: function CalcMovement(delta, tableGroup) {
+        key: "CalcFrame",
+        value: function CalcFrame(delta, tableGroup) {
             this.UpdateCurrentSpeed(delta);
             if (this.Direction.x > 0) this.CheckColistion(1, 0, 0, tableGroup, delta);else if (this.Direction.x < 0) this.CheckColistion(-1, 0, 0, tableGroup, delta);
 

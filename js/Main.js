@@ -12,7 +12,7 @@ var keyboardControl;
 
 var clock;
 
-var poolTable, ballArray, playBallStart, eightballstart;
+var poolTable, ballArray, holeArray, playBallStart, eightballstart;
 var startPosArray;
 var collisionArray = [];
 
@@ -51,6 +51,15 @@ function init() {
     light.castShadow = true;
 
     poolTable = new PoolTable();
+
+    holeArray = [
+        new Hole(72.5, -147.5, 1),
+        new Hole(-72.5, -147.5, 2),
+        new Hole(72.5, 0, 3),
+        new Hole(-72.5, 0, 4),
+        new Hole(72.5, 147.5, 5),
+        new Hole(-72.5, 147.5, 6)
+    ];
 
     ballArray = [
         new PlayBall(0),
@@ -112,6 +121,11 @@ function init() {
         scene.add(ballArray[i].mesh);
     }
 
+    for(let i = 0; i < holeArray.length; i++)
+    {
+        scene.add(holeArray[i].mesh);
+    }
+
     window.addEventListener('resize', onWindowResize, false);
 
     textureManager.onLoad = function () {
@@ -130,7 +144,7 @@ function render() {
 
     for(let i = 0; i < ballArray.length; i++)
     {
-        ballArray[i].CalcMovement(clockDelta, poolTable.children);
+        ballArray[i].CalcFrame(clockDelta, poolTable.children);
     }
 
     for(let i = 0; i < ballArray.length; i++)
@@ -142,6 +156,18 @@ function render() {
                 ballArray[i].BallCollision(ballArray[j]);
             }
             collisionArray[i][j] = ballArray[i].CheckBallCollision(ballArray[j]);
+        }
+    }
+
+    for(let i = 0; i < holeArray.length; i++)
+    {
+        for(let j = 0; j < ballArray.length; j++)
+        {
+            var col = holeArray[i].CheckBall(ballArray[j]);
+            if(col != null)
+            {
+                console.log(col + " was deleted");
+            }
         }
     }
 

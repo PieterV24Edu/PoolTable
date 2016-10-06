@@ -18,6 +18,8 @@ var PlayBall = function (_Ball) {
 
         var _this = _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, name));
 
+        _this.PowerDirection = true;
+
         _this.CeuLenght = 100;
         _this.CeuMaterial = new THREE.MeshLambertMaterial({ color: 0x800000 });
         _this.CeuGeo = new THREE.CylinderGeometry(0.5, 1.5, _this.CeuLenght, 32);
@@ -60,7 +62,9 @@ var PlayBall = function (_Ball) {
                     this.ceu.rotateY(-rot);
                     this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), rot);
                 }
-                if (controller.GetKey("space")) {}
+                if (controller.GetKey("space")) {
+                    this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 400);
+                }
             }
         }
     }, {
@@ -70,10 +74,23 @@ var PlayBall = function (_Ball) {
             this.ceu.position.set(x, this.Mesh.position.y, z);
         }
     }, {
-        key: "CalcMovement",
-        value: function CalcMovement(delta, tableGroup) {
-            _get(PlayBall.prototype.__proto__ || Object.getPrototypeOf(PlayBall.prototype), "CalcMovement", this).call(this, delta, tableGroup);
+        key: "CalcFrame",
+        value: function CalcFrame(delta, tableGroup) {
+            _get(PlayBall.prototype.__proto__ || Object.getPrototypeOf(PlayBall.prototype), "CalcFrame", this).call(this, delta, tableGroup);
             this.ceu.position.add(this.currentSpeed);
+            if (this.ceu.visible) {
+                if (this.PowerCube.scale.y <= 0.1 && this.PowerDirection) {
+                    this.PowerDirection = false;
+                    this.PowerCube.scale.y = 0.1;
+                }
+                if (this.PowerCube.scale.y >= 1 && !this.PowerDirection) {
+                    this.PowerDirection = true;
+                    this.PowerCube.scale.y = 1;
+                }
+
+                if (!this.PowerDirection) this.PowerCube.scale.y += 1 * delta;
+                if (this.PowerDirection) this.PowerCube.scale.y -= 1 * delta;
+            }
         }
     }, {
         key: "StartMoving",

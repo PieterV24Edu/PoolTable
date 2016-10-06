@@ -2,6 +2,8 @@ class PlayBall extends Ball {
     constructor(name) {
         super(name);
 
+        this.PowerDirection = true;
+
         this.CeuLenght = 100;
         this.CeuMaterial = new THREE.MeshLambertMaterial({color: 0x800000});
         this.CeuGeo = new THREE.CylinderGeometry(0.5, 1.5, this.CeuLenght, 32);
@@ -44,7 +46,7 @@ class PlayBall extends Ball {
             }
             if(controller.GetKey("space"))
             {
-
+                this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 400);
             }
         }
     }
@@ -55,10 +57,25 @@ class PlayBall extends Ball {
         this.ceu.position.set(x, this.Mesh.position.y, z);
     }
 
-    CalcMovement(delta, tableGroup)
+    CalcFrame(delta, tableGroup)
     {
-        super.CalcMovement(delta, tableGroup);
+        super.CalcFrame(delta, tableGroup);
         this.ceu.position.add(this.currentSpeed);
+        if(this.ceu.visible) {
+            if (this.PowerCube.scale.y <= 0.1 && this.PowerDirection) {
+                this.PowerDirection = false;
+                this.PowerCube.scale.y = 0.1;
+            }
+            if (this.PowerCube.scale.y >= 1 && !this.PowerDirection) {
+                this.PowerDirection = true;
+                this.PowerCube.scale.y = 1;
+            }
+
+            if(!this.PowerDirection)
+                this.PowerCube.scale.y += 1 * delta;
+            if(this.PowerDirection)
+                this.PowerCube.scale.y -= 1 * delta;
+        }
     }
 
     StartMoving(direction, speed)

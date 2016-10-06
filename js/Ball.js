@@ -21,7 +21,7 @@ class Ball
         this.rayCaster = new THREE.Raycaster();
     }
 
-    CalcMovement(delta, tableGroup)
+    CalcFrame(delta, tableGroup)
     {
         this.UpdateCurrentSpeed(delta);
         if(this.Direction.x > 0)

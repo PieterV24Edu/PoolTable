@@ -14,7 +14,7 @@ var keyboardControl;
 
 var clock;
 
-var poolTable, ballArray, playBallStart, eightballstart;
+var poolTable, ballArray, holeArray, playBallStart, eightballstart;
 var startPosArray;
 var collisionArray = [];
 
@@ -54,6 +54,8 @@ function init() {
 
     poolTable = new PoolTable();
 
+    holeArray = [new Hole(72.5, -147.5, 1), new Hole(-72.5, -147.5, 2), new Hole(72.5, 0, 3), new Hole(-72.5, 0, 4), new Hole(72.5, 147.5, 5), new Hole(-72.5, 147.5, 6)];
+
     ballArray = [new PlayBall(0), new PoolBall(1, 1), new PoolBall(2, 1), new PoolBall(3, 1), new PoolBall(4, 1), new PoolBall(5, 1), new PoolBall(6, 1), new PoolBall(7, 1), new PoolBall(8, 8), new PoolBall(9, 2), new PoolBall(10, 2), new PoolBall(11, 2), new PoolBall(12, 2), new PoolBall(13, 2), new PoolBall(14, 2), new PoolBall(15, 2)];
 
     playBallStart = new THREE.Vector2(0, 75);
@@ -88,6 +90,10 @@ function init() {
         scene.add(ballArray[_i].mesh);
     }
 
+    for (var _i2 = 0; _i2 < holeArray.length; _i2++) {
+        scene.add(holeArray[_i2].mesh);
+    }
+
     window.addEventListener('resize', onWindowResize, false);
 
     textureManager.onLoad = function () {
@@ -105,15 +111,24 @@ function render() {
     var clockDelta = clock.getDelta();
 
     for (var i = 0; i < ballArray.length; i++) {
-        ballArray[i].CalcMovement(clockDelta, poolTable.children);
+        ballArray[i].CalcFrame(clockDelta, poolTable.children);
     }
 
-    for (var _i2 = 0; _i2 < ballArray.length; _i2++) {
-        for (var j = _i2 + 1; j < ballArray.length; j++) {
-            if (collisionArray[_i2][j] == false) {
-                ballArray[_i2].BallCollision(ballArray[j]);
+    for (var _i3 = 0; _i3 < ballArray.length; _i3++) {
+        for (var j = _i3 + 1; j < ballArray.length; j++) {
+            if (collisionArray[_i3][j] == false) {
+                ballArray[_i3].BallCollision(ballArray[j]);
             }
-            collisionArray[_i2][j] = ballArray[_i2].CheckBallCollision(ballArray[j]);
+            collisionArray[_i3][j] = ballArray[_i3].CheckBallCollision(ballArray[j]);
+        }
+    }
+
+    for (var _i4 = 0; _i4 < holeArray.length; _i4++) {
+        for (var _j = 0; _j < ballArray.length; _j++) {
+            var col = holeArray[_i4].CheckBall(ballArray[_j]);
+            if (col != null) {
+                console.log(col + " was deleted");
+            }
         }
     }
 
