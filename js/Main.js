@@ -37,7 +37,7 @@ function init() {
     container.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.x = -200;
+    camera.position.z = 200;
     camera.position.y = 100;
 
     scene = new THREE.Scene();
@@ -62,7 +62,7 @@ function init() {
     ];
 
     ballArray = [
-        new PlayBall(0),
+        new PlayBall(0, poolTable.children),
         new PoolBall(1, 1),
         new PoolBall(2, 1),
         new PoolBall(3, 1),
@@ -84,10 +84,9 @@ function init() {
     eightballstart = new THREE.Vector2(0, -87);
 
     startPosArray = [
-        /*[0, 0],*/
         [0, -75],
         [-3, -81],[3, -81],
-        [-6, -87],/*[0, 0],*/[6, -87],
+        [-6, -87],[6, -87],
         [-9, -93],[3, -93],[-3, -93],[9, -93],
         [-12, -99],[-6, -99],[0, -99],[6, -99],[12, -99]
     ];
@@ -116,6 +115,7 @@ function init() {
 
     scene.add(ballArray[0].mesh);
     scene.add(ballArray[0].ceuMesh);
+    scene.add(ballArray[0].Line);
     for(let i = 1; i < ballArray.length; i++)
     {
         scene.add(ballArray[i].mesh);
@@ -127,6 +127,9 @@ function init() {
     }
 
     window.addEventListener('resize', onWindowResize, false);
+    document.addEventListener('onFoul', function () {
+        console.log("FOUL");
+    });
 
     textureManager.onLoad = function () {
         animate();
@@ -144,18 +147,20 @@ function render() {
 
     for(let i = 0; i < ballArray.length; i++)
     {
-        ballArray[i].CalcFrame(clockDelta, poolTable.children);
+        if(ballArray[i].inScene)
+            ballArray[i].CalcFrame(clockDelta, poolTable.children);
     }
 
     for(let i = 0; i < ballArray.length; i++)
     {
         for(let j = i + 1; j < ballArray.length; j++)
         {
-            if(collisionArray[i][j] == false)
-            {
-                ballArray[i].BallCollision(ballArray[j]);
+            if(ballArray[i].inScene && ballArray[j].inScene) {
+                if (collisionArray[i][j] == false) {
+                    ballArray[i].BallCollision(ballArray[j]);
+                }
+                collisionArray[i][j] = ballArray[i].CheckBallCollision(ballArray[j]);
             }
-            collisionArray[i][j] = ballArray[i].CheckBallCollision(ballArray[j]);
         }
     }
 
@@ -163,10 +168,12 @@ function render() {
     {
         for(let j = 0; j < ballArray.length; j++)
         {
-            var col = holeArray[i].CheckBall(ballArray[j]);
-            if(col != null)
-            {
-                console.log(col + " was deleted");
+            if(ballArray[j].inScene) {
+                var col = holeArray[i].CheckBall(ballArray[j]);
+                if (col != null) {
+                    console.log(col.name + " was deleted");
+                    //scene.remove(col.mesh);
+                }
             }
         }
     }
@@ -220,7 +227,8 @@ function calcNewRot(x,y, rotation, center){
 function checkMovingBalls() {
     for(let i = 0; i < ballArray.length; i++)
     {
-        if(ballArray[i].speed > 0)
+
+        if(ballArray[i].speed > 0 && ballArray[i].inScene)
             return true;
     }
     return false;

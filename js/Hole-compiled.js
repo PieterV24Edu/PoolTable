@@ -10,8 +10,10 @@ var Hole = function () {
 
         this.name = name;
         this.Radius = 5;
-        this.HoleMat = new THREE.MeshLambertMaterial({ color: 0xFF0000 });
-        this.HoleGeo = new THREE.SphereGeometry(this.Radius, 32, 32);
+        this.OnFoulEvent = new Event("onFoul");
+        //this.HoleMat = new THREE.MeshLambertMaterial({color: 0xFF0000, });
+        this.HoleMat = new THREE.MeshDepthMaterial({ wireframe: true });
+        this.HoleGeo = new THREE.SphereGeometry(this.Radius, 10, 10);
         this.HoleMesh = new THREE.Mesh(this.HoleGeo, this.HoleMat);
         this.HoleMesh.receiveShadow = true;
         this.HoleMesh.castShadow = true;
@@ -23,7 +25,14 @@ var Hole = function () {
         key: "CheckBall",
         value: function CheckBall(ball) {
             var distance = this.HoleMesh.position.distanceTo(ball.position);
-            if (distance < ball.Radius + this.Radius) return ball.name;
+            if (distance < ball.Radius + this.Radius) {
+                if (ball.name == 8 || ball.name == 0) {
+                    ball.ResetPos();
+                    document.dispatchEvent(this.OnFoulEvent);
+                    return null;
+                } else ball.inScene = false;
+                return ball;
+            }
             return null;
         }
     }, {

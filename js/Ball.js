@@ -3,6 +3,8 @@ class Ball
     constructor(name)
     {
         this.name = name;
+        this.inScene = true;
+        this.startPos = null;
         this.Radius = 2.85;
         this.Geometry = new THREE.SphereGeometry(this.Radius, 32, 32);
         this.Material = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
@@ -137,6 +139,8 @@ class Ball
 
     SetPosition(x, z)
     {
+        if(this.startPos == null)
+            this.startPos = new THREE.Vector2(x, z);
         this.Mesh.position.x = x;
         this.Mesh.position.z = z;
     }
@@ -150,6 +154,15 @@ class Ball
     SetSpeed(speed)
     {
         this.speed = speed;
+    }
+
+    ResetPos()
+    {
+        if(this.startPos != null) {
+            this.SetPosition(this.startPos.x, this.startPos.y);
+            this.speed = 0;
+            this.Direction = this.Direction.set(0,0,0);
+        }
     }
 
     get mesh()

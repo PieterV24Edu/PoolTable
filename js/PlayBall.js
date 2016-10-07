@@ -1,8 +1,9 @@
 class PlayBall extends Ball {
-    constructor(name) {
+    constructor(name, tableGroup) {
         super(name);
 
         this.PowerDirection = true;
+        this.tableGroup = tableGroup;
 
         this.CeuLenght = 100;
         this.CeuMaterial = new THREE.MeshLambertMaterial({color: 0x800000});
@@ -25,6 +26,11 @@ class PlayBall extends Ball {
         this.PowerCube.position.y = 15;
 
         this.CeuDirection = new THREE.Vector2(0, -1);
+
+        this.LineMat = new THREE.LineBasicMaterial({color: 0xFFFFFF});
+        this.LineGeo = new THREE.Geometry();
+
+        this.Line = new THREE.Line();
     }
 
     SetVisibility(state)
@@ -46,7 +52,7 @@ class PlayBall extends Ball {
             }
             if(controller.GetKey("space"))
             {
-                this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 400);
+                this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 300);
             }
         }
     }
@@ -75,6 +81,7 @@ class PlayBall extends Ball {
                 this.PowerCube.scale.y += 1 * delta;
             if(this.PowerDirection)
                 this.PowerCube.scale.y -= 1 * delta;
+            this.CalcNewLine();
         }
     }
 
@@ -82,6 +89,22 @@ class PlayBall extends Ball {
     {
         this.SetDirection(direction.x, direction.y);
         this.speed = speed;
+    }
+
+    CalcNewLine()
+    {
+        this.LineMat = new THREE.LineBasicMaterial(0xFFFFFF);
+        this.LineGeo = new THREE.Geometry();
+
+        this.rayCaster.set(this.position, new THREE.Vector3(this.CeuDirection.x, 0, this.CeuDirection.y));
+        var intersects = this.rayCaster.intersectObjects(this.tableGroup);
+        var distance = intersects[0].distance;
+
+        this.LineGeo = new THREE.Geometry();
+        this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position));
+        var scaledDirVec = new THREE.Vector2().copy(this.CeuDirection).multiplyScalar(distance);
+        this.LineGeo.vertices.push(new THREE.Vector3(scaledDirVec.x, this.position.y, scaledDirVec.y));
+        this.Line = new THREE.Line(this.LineGeo, this.LineMat);
     }
 
     get ceuMesh()

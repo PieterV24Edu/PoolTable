@@ -13,12 +13,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PlayBall = function (_Ball) {
     _inherits(PlayBall, _Ball);
 
-    function PlayBall(name) {
+    function PlayBall(name, tableGroup) {
         _classCallCheck(this, PlayBall);
 
         var _this = _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, name));
 
         _this.PowerDirection = true;
+        _this.tableGroup = tableGroup;
 
         _this.CeuLenght = 100;
         _this.CeuMaterial = new THREE.MeshLambertMaterial({ color: 0x800000 });
@@ -41,6 +42,11 @@ var PlayBall = function (_Ball) {
         _this.PowerCube.position.y = 15;
 
         _this.CeuDirection = new THREE.Vector2(0, -1);
+
+        _this.LineMat = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
+        _this.LineGeo = new THREE.Geometry();
+
+        _this.Line = new THREE.Line();
         return _this;
     }
 
@@ -63,7 +69,7 @@ var PlayBall = function (_Ball) {
                     this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), rot);
                 }
                 if (controller.GetKey("space")) {
-                    this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 400);
+                    this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 300);
                 }
             }
         }
@@ -90,6 +96,7 @@ var PlayBall = function (_Ball) {
 
                 if (!this.PowerDirection) this.PowerCube.scale.y += 1 * delta;
                 if (this.PowerDirection) this.PowerCube.scale.y -= 1 * delta;
+                this.CalcNewLine();
             }
         }
     }, {
@@ -97,6 +104,22 @@ var PlayBall = function (_Ball) {
         value: function StartMoving(direction, speed) {
             this.SetDirection(direction.x, direction.y);
             this.speed = speed;
+        }
+    }, {
+        key: "CalcNewLine",
+        value: function CalcNewLine() {
+            this.LineMat = new THREE.LineBasicMaterial(0xFFFFFF);
+            this.LineGeo = new THREE.Geometry();
+
+            this.rayCaster.set(this.position, new THREE.Vector3(this.CeuDirection.x, 0, this.CeuDirection.y));
+            var intersects = this.rayCaster.intersectObjects(this.tableGroup);
+            var distance = intersects[0].distance;
+
+            this.LineGeo = new THREE.Geometry();
+            this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position));
+            var scaledDirVec = new THREE.Vector2().copy(this.CeuDirection).multiplyScalar(distance);
+            this.LineGeo.vertices.push(new THREE.Vector3(scaledDirVec.x, this.position.y, scaledDirVec.y));
+            this.Line = new THREE.Line(this.LineGeo, this.LineMat);
         }
     }, {
         key: "ceuMesh",

@@ -9,6 +9,8 @@ var Ball = function () {
         _classCallCheck(this, Ball);
 
         this.name = name;
+        this.inScene = true;
+        this.startPos = null;
         this.Radius = 2.85;
         this.Geometry = new THREE.SphereGeometry(this.Radius, 32, 32);
         this.Material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
@@ -134,6 +136,7 @@ var Ball = function () {
     }, {
         key: "SetPosition",
         value: function SetPosition(x, z) {
+            if (this.startPos == null) this.startPos = new THREE.Vector2(x, z);
             this.Mesh.position.x = x;
             this.Mesh.position.z = z;
         }
@@ -147,6 +150,15 @@ var Ball = function () {
         key: "SetSpeed",
         value: function SetSpeed(speed) {
             this.speed = speed;
+        }
+    }, {
+        key: "ResetPos",
+        value: function ResetPos() {
+            if (this.startPos != null) {
+                this.SetPosition(this.startPos.x, this.startPos.y);
+                this.speed = 0;
+                this.Direction = this.Direction.set(0, 0, 0);
+            }
         }
     }, {
         key: "mesh",
