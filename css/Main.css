@@ -10,6 +10,14 @@ canvas
     display: block;
 }
 
+#scoreOverlay
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: Ubuntu;
+}
+
 #dPadContainer
 {
     width: 170px;
@@ -50,6 +58,11 @@ canvas
 .cameraHeightPad
 {
     background-color: #00FF00;
+}
+
+.glyphicon{
+    font-size: 50px;
+    color: #000000;
 }
 
 #dPad1

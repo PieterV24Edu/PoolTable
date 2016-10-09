@@ -2,9 +2,12 @@
 
 //1 unit = 1cm
 
-$(document).ready(function () {
-    init();
-});
+/*$(document).ready(function () {
+    initPlayers();
+});*/
+
+var players = [],
+    currentPlayer;
 
 var container;
 
@@ -20,6 +23,20 @@ var collisionArray = [];
 
 var windowHalfX, windowHalfY;
 
+function initPlayers() {
+    var player1 = document.getElementById("player1Name");
+    var player2 = document.getElementById("player2Name");
+    players[0] = new Player(player1.value, "player1");
+    players[1] = new Player(player2.value, "player2");
+    currentPlayer = 0;
+    $("#currentPlayer").text("It is " + players[currentPlayer].Name + "'s turn");
+    updateScore(0, 0);
+    updateScore(1, 0);
+    $(".GameOverlay").show();
+    $(".loaderElement").hide();
+    init();
+}
+
 function init() {
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
@@ -34,7 +51,7 @@ function init() {
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0x0000FF);
+    renderer.setClearColor(0xFFFFFF);
     renderer.shadowMap.enabled = true;
     container.appendChild(renderer.domElement);
 
@@ -84,7 +101,6 @@ function init() {
 
     scene.add(ballArray[0].mesh);
     scene.add(ballArray[0].ceuMesh);
-    scene.add(ballArray[0].Line);
     for (var _i = 1; _i < ballArray.length; _i++) {
         scene.add(ballArray[_i].mesh);
     }
@@ -94,9 +110,7 @@ function init() {
     }
 
     window.addEventListener('resize', onWindowResize, false);
-    document.addEventListener('onFoul', function () {
-        console.log("FOUL");
-    });
+    document.addEventListener('onPut', applyRules, false);
 
     textureManager.onLoad = function () {
         animate();
@@ -145,6 +159,9 @@ function render() {
     } else {
         ballArray[0].SetVisibility(true);
         ballArray[0].CheckKeys(keyboardControl);
+        scene.remove(ballArray[0].Line);
+        ballArray[0].CalcNewLine();
+        scene.add(ballArray[0].Line);
     }
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -225,9 +242,41 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onClick() {
-    ballArray[0].SetDirection(ballArray[0].CeuDirection.x, ballArray[0].CeuDirection.y);
-    ballArray[0].SetSpeed(200);
+function applyRules(event) {
+    var ball = event.detail;
+    var player = players[currentPlayer];
+    var otherPlayer;
+    if (currentPlayer == 0) otherPlayer = players[1];else otherPlayer = players[0];
+    if (ball.name == 0 || ball.name == 8 && player.Score != 7) {
+        ball.ResetPos();
+        switchPlayer();
+        return;
+    }
+    //Check if ball is a ball with which you can score
+    if (ball.name != 0 && ball.name != 8) {
+        if (player.BallType == 0) {
+            if (ball.type == 1) {
+                player.BallType = 1;
+                otherPlayer.BallType = 0;
+            }
+            if (ball.type == 0) {
+                player.BallType = 0;
+                otherPlayer.BallType = 1;
+            }
+        }
+    }
+}
+
+function switchPlayer() {
+    if (currentPlayer == 0) currentPlayer = 1;else if (currentPlayer == 1) currentPlayer = 0;
+    $("#currentPlayer").text("It is " + players[currentPlayer].Name + "'s turn");
+}
+
+function updateScore(playerNr, score) {
+    var player = players[playerNr];
+    player.BallsPut(score);
+    var playerText = document.getElementById(player.ID);
+    $(playerText).text(player.Name + ": " + player.Score + "/7");
 }
 
 //# sourceMappingURL=Main-compiled.js.map

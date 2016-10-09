@@ -5,20 +5,21 @@
     <title>Pool Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/Main.css"/>
 
     <!-- Libs -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="js/lib/three.js"></script>
     <script src="js/lib/jquery-ui.min.js"></script>
-    <script src="js/lib/csg.js"></script>
-    <script src="js/lib/ThreeCSG.js"></script>
 
     <!-- Scripts -->
     <script src="js/Main.js"></script>
     <script src="js/Control.js"></script>
+    <script src="js/Player.js"></script>
     <script src="js/Ball.js"></script>
     <script src="js/PoolBall.js"></script>
     <script src="js/PlayBall.js"></script>
@@ -27,17 +28,37 @@
 
 </head>
 <body>
-    <div id="shootContainter">
-        <div class="dPadItem" id="shootButton"></div>
+    <h1 class="loaderElement">Select Player names</h1>
+    <div class="loaderElement" id="PlayerSelection">
+        <div class="form-group">
+            <label for="player1Name">Player 1</label>
+            <input id="player1Name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="player2Name">Player 2</label>
+            <input id="player2Name" class="form-control">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="initPlayers()">Submit</button>
     </div>
 
-    <div id="dPadContainer">
-        <div class="dPadItem cameraRotPad" id="dPad1"></div>
-        <div class="dPadItem cameraRotPad" id="dPad2"></div>
-        <div class="dPadItem ceuRotPad" id="dPad3"></div>
-        <div class="dPadItem ceuRotPad" id="dPad4"></div>
-        <div class="dPadItem cameraHeightPad" id="dPad5"></div>
-        <div class="dPadItem cameraHeightPad" id="dPad6"></div>
+    <div class="GameOverlay" id="scoreOverlay" hidden>
+        <h4 id="currentPlayer"></h4>
+        <p id="player1">Player 1: 0/7</p>
+        <p id="player2">Player 2: 0/7</p>
+    </div>
+
+    <!-- Dpad controls -->
+    <div class="GameOverlay" id="shootContainter" hidden>
+        <div class="dPadItem GameOverlay" id="shootButton"><span class="glyphicon glyphicon-certificate"></span></div>
+    </div>
+
+    <div class="GameOverlay" id="dPadContainer" hidden>
+        <div class="dPadItem cameraRotPad" id="dPad1"><span class="glyphicon glyphicon-chevron-left"></span></div>
+        <div class="dPadItem cameraRotPad" id="dPad2"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        <div class="dPadItem ceuRotPad" id="dPad3"><span class="glyphicon glyphicon-arrow-left"></span></div>
+        <div class="dPadItem ceuRotPad" id="dPad4"><span class="glyphicon glyphicon-arrow-right"></span></div>
+        <div class="dPadItem cameraHeightPad" id="dPad5"><span class="glyphicon glyphicon-arrow-up"></span></div>
+        <div class="dPadItem cameraHeightPad" id="dPad6"><span class="glyphicon glyphicon-arrow-down"></span></div>
     </div>
 </body>
 </html>

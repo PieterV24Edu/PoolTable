@@ -26,7 +26,7 @@ var PlayBall = function (_Ball) {
         _this.CeuGeo = new THREE.CylinderGeometry(0.5, 1.5, _this.CeuLenght, 32);
         _this.CeuMesh = new THREE.Mesh(_this.CeuGeo, _this.CeuMaterial);
 
-        _this.PowerCubeMat = new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 10 });
+        _this.PowerCubeMat = new THREE.MeshLambertMaterial({ color: 0xFFFF00 });
         _this.PowerCubeGeo = new THREE.BoxGeometry(2.5, 20, 2.5);
         _this.PowerCube = new THREE.Mesh(_this.PowerCubeGeo, _this.PowerCubeMat);
 
@@ -45,8 +45,11 @@ var PlayBall = function (_Ball) {
 
         _this.LineMat = new THREE.LineBasicMaterial({ color: 0xFFFFFF });
         _this.LineGeo = new THREE.Geometry();
+        _this.LineGeo.vertices.push(new THREE.Vector3().copy(_this.position));
+        _this.LineGeo.vertices.push(new THREE.Vector3(0, 0, -75));
 
-        _this.Line = new THREE.Line();
+        _this.Line = new THREE.Line(_this.LineGeo, _this.LineMat);
+        _this.Line.geometry.dynamic = true;
         return _this;
     }
 
@@ -54,12 +57,13 @@ var PlayBall = function (_Ball) {
         key: "SetVisibility",
         value: function SetVisibility(state) {
             this.ceu.visible = state;
+            this.Line.visible = state;
         }
     }, {
         key: "CheckKeys",
         value: function CheckKeys(controller) {
             if (this.ceu.visible) {
-                var rot = 1 * Math.PI / 180;
+                var rot = 0.1 * Math.PI / 180;
                 if (controller.GetKey("a")) {
                     this.ceu.rotateY(rot);
                     this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), -rot);
@@ -96,7 +100,6 @@ var PlayBall = function (_Ball) {
 
                 if (!this.PowerDirection) this.PowerCube.scale.y += 1 * delta;
                 if (this.PowerDirection) this.PowerCube.scale.y -= 1 * delta;
-                this.CalcNewLine();
             }
         }
     }, {
@@ -115,11 +118,11 @@ var PlayBall = function (_Ball) {
             var intersects = this.rayCaster.intersectObjects(this.tableGroup);
             var distance = intersects[0].distance;
 
-            this.LineGeo = new THREE.Geometry();
             this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position));
             var scaledDirVec = new THREE.Vector2().copy(this.CeuDirection).multiplyScalar(distance);
-            this.LineGeo.vertices.push(new THREE.Vector3(scaledDirVec.x, this.position.y, scaledDirVec.y));
+            this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position).add(new THREE.Vector3(scaledDirVec.x, 0, scaledDirVec.y)));
             this.Line = new THREE.Line(this.LineGeo, this.LineMat);
+            this.Line.geometry.verticesNeedUpdate = true;
         }
     }, {
         key: "ceuMesh",

@@ -2,21 +2,17 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/js/PlayBall-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/Ball-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/Hole-compiled.js" />
         <item url="file://$PROJECT_DIR$/js/Main-compiled.js" />
-        <item url="file://$PROJECT_DIR$/js/PoolBall-compiled.js" />
+        <item url="file://$PROJECT_DIR$/js/Hole-compiled.js" />
+        <item url="file://$PROJECT_DIR$/js/PlayBall-compiled.js" />
+        <item url="file://$PROJECT_DIR$/js/Player-compiled.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/js/Hole-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/Hole-compiled-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/PlayBall-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/Ball-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/Hole-compiled.js" />
       <root url="file://$PROJECT_DIR$/js/Main-compiled.js" />
-      <root url="file://$PROJECT_DIR$/js/PoolBall-compiled.js" />
+      <root url="file://$PROJECT_DIR$/js/Hole-compiled.js" />
+      <root url="file://$PROJECT_DIR$/js/PlayBall-compiled.js" />
+      <root url="file://$PROJECT_DIR$/js/Player-compiled.js" />
     </CLASSES>
     <SOURCES />
   </library>

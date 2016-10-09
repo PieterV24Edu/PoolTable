@@ -10,7 +10,7 @@ class PlayBall extends Ball {
         this.CeuGeo = new THREE.CylinderGeometry(0.5, 1.5, this.CeuLenght, 32);
         this.CeuMesh = new THREE.Mesh(this.CeuGeo, this.CeuMaterial);
 
-        this.PowerCubeMat = new THREE.MeshLambertMaterial({color: 0xff0000, opacity: 10});
+        this.PowerCubeMat = new THREE.MeshLambertMaterial({color: 0xFFFF00});
         this.PowerCubeGeo = new THREE.BoxGeometry(2.5, 20, 2.5);
         this.PowerCube = new THREE.Mesh(this.PowerCubeGeo, this.PowerCubeMat);
 
@@ -29,19 +29,23 @@ class PlayBall extends Ball {
 
         this.LineMat = new THREE.LineBasicMaterial({color: 0xFFFFFF});
         this.LineGeo = new THREE.Geometry();
+        this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position));
+        this.LineGeo.vertices.push(new THREE.Vector3(0,0,-75));
 
-        this.Line = new THREE.Line();
+        this.Line = new THREE.Line(this.LineGeo, this.LineMat);
+        this.Line.geometry.dynamic = true;
     }
 
     SetVisibility(state)
     {
         this.ceu.visible = state;
+        this.Line.visible = state;
     }
 
     CheckKeys(controller)
     {
         if(this.ceu.visible) {
-            var rot = 1 * Math.PI / 180;
+            var rot = 0.1 * Math.PI / 180;
             if (controller.GetKey("a")) {
                 this.ceu.rotateY(rot);
                 this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), -rot);
@@ -81,7 +85,6 @@ class PlayBall extends Ball {
                 this.PowerCube.scale.y += 1 * delta;
             if(this.PowerDirection)
                 this.PowerCube.scale.y -= 1 * delta;
-            this.CalcNewLine();
         }
     }
 
@@ -100,11 +103,11 @@ class PlayBall extends Ball {
         var intersects = this.rayCaster.intersectObjects(this.tableGroup);
         var distance = intersects[0].distance;
 
-        this.LineGeo = new THREE.Geometry();
         this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position));
         var scaledDirVec = new THREE.Vector2().copy(this.CeuDirection).multiplyScalar(distance);
-        this.LineGeo.vertices.push(new THREE.Vector3(scaledDirVec.x, this.position.y, scaledDirVec.y));
+        this.LineGeo.vertices.push(new THREE.Vector3().copy(this.position).add(new THREE.Vector3(scaledDirVec.x, 0, scaledDirVec.y)));
         this.Line = new THREE.Line(this.LineGeo, this.LineMat);
+        this.Line.geometry.verticesNeedUpdate = true;
     }
 
     get ceuMesh()

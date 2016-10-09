@@ -4,7 +4,6 @@ class Hole
     {
         this.name = name;
         this.Radius = 5;
-        this.OnFoulEvent = new Event("onFoul");
         //this.HoleMat = new THREE.MeshLambertMaterial({color: 0xFF0000, });
         this.HoleMat = new THREE.MeshDepthMaterial({wireframe: true});
         this.HoleGeo = new THREE.SphereGeometry(this.Radius, 10, 10);
@@ -20,14 +19,8 @@ class Hole
         var distance = this.HoleMesh.position.distanceTo(ball.position);
         if(distance < ball.Radius + this.Radius)
         {
-            if(ball.name == 8 || ball.name == 0)
-            {
-                ball.ResetPos();
-                document.dispatchEvent(this.OnFoulEvent);
-                return null;
-            }
-            else
-                ball.inScene = false;
+            var PutEvent = new CustomEvent("onPut", {'detail': ball});
+            document.dispatchEvent(PutEvent);
             return ball;
         }
         return null;
