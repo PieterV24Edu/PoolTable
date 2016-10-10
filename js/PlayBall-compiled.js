@@ -13,10 +13,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PlayBall = function (_Ball) {
     _inherits(PlayBall, _Ball);
 
-    function PlayBall(name, tableGroup) {
+    function PlayBall(name, type, tableGroup) {
         _classCallCheck(this, PlayBall);
 
-        var _this = _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, name));
+        var _this = _possibleConstructorReturn(this, (PlayBall.__proto__ || Object.getPrototypeOf(PlayBall)).call(this, name, type));
 
         _this.PowerDirection = true;
         _this.tableGroup = tableGroup;
@@ -50,6 +50,8 @@ var PlayBall = function (_Ball) {
 
         _this.Line = new THREE.Line(_this.LineGeo, _this.LineMat);
         _this.Line.geometry.dynamic = true;
+
+        _this.ShootEvent = new Event('onShoot');
         return _this;
     }
 
@@ -63,7 +65,7 @@ var PlayBall = function (_Ball) {
         key: "CheckKeys",
         value: function CheckKeys(controller) {
             if (this.ceu.visible) {
-                var rot = 0.1 * Math.PI / 180;
+                var rot = parseInt($("#Display").text()) / 10 * Math.PI / 180;
                 if (controller.GetKey("a")) {
                     this.ceu.rotateY(rot);
                     this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), -rot);
@@ -74,6 +76,7 @@ var PlayBall = function (_Ball) {
                 }
                 if (controller.GetKey("space")) {
                     this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 300);
+                    document.dispatchEvent(this.ShootEvent);
                 }
             }
         }

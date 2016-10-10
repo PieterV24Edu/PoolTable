@@ -14,6 +14,11 @@ class Player
         this.OwnBallsPut += nr;
     }
 
+    AddBall(ball)
+    {
+        this.PuttedBalls.push(ball);
+    }
+
     ClearBalls()
     {
         this.PuttedBalls = [];

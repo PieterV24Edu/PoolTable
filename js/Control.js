@@ -27,6 +27,14 @@ class Control
             $(this).css("background-color", "#FF0000");
         });
 
+        //ColorChange CeuRotPad
+        $(".ceuRotSpeedPad").mouseenter(function () {
+            $(this).css("background-color", "#AACCAA");
+        });
+        $(".ceuRotSpeedPad").mouseleave(function () {
+            $(this).css("background-color", "#00CC00");
+        });
+
         //ColorChange CameraHeightPad
         $(".cameraHeightPad").mouseenter(function () {
             $(this).css("background-color", "#AAFFAA");
@@ -113,6 +121,24 @@ class Control
             $(this).css("background-color", "#00FF00");
             self.SetKey("down", false);
         });
+
+        //Dpad 7
+        $("#dPad7").on("touchstart mousedown", function () {
+            $(this).css("background-color", "#007700");
+            self.ChangeValue(false);
+        });
+        $("#dPad7").on("touchend mouseup mouseleave", function () {
+            $(this).css("background-color", "#00CC00");
+        });
+
+        //Dpad 8
+        $("#dPad8").on("touchstart mousedown", function () {
+            $(this).css("background-color", "#007700");
+            self.ChangeValue(true);
+        });
+        $("#dPad8").on("touchend mouseup mouseleave", function () {
+            $(this).css("background-color", "#00CC00");
+        });
     }
 
     OnKeyDown(e)
@@ -158,15 +184,38 @@ class Control
             //In case of down
             case 40:
                 return "down";
-            //In case of a
+            //In case of
             case 65:
                 return "a";
             //In case of d
             case 68:
                 return "d";
+            //In case of q
+            case 81:
+                this.ChangeValue(false);
+                break;
+            //In case of e
+            case 69:
+                this.ChangeValue(true);
+                break;
             //In case none of the above return null
             default:
                 return null;
         }
+    }
+
+    ChangeValue(increment)
+    {
+        var $Display = $("#Display");
+        var currentValue = $Display.text();
+        if(increment && currentValue < 20)
+        {
+            currentValue = parseInt(currentValue) + 1;
+        }
+        else if(!increment && currentValue > 1)
+        {
+            currentValue = parseInt(currentValue) - 1;
+        }
+        $Display.text(currentValue);
     }
 }

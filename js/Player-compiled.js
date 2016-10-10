@@ -21,6 +21,11 @@ var Player = function () {
             this.OwnBallsPut += nr;
         }
     }, {
+        key: "AddBall",
+        value: function AddBall(ball) {
+            this.PuttedBalls.push(ball);
+        }
+    }, {
         key: "ClearBalls",
         value: function ClearBalls() {
             this.PuttedBalls = [];

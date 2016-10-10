@@ -14,10 +14,7 @@ var PoolBall = function (_Ball) {
     function PoolBall(name, type) {
         _classCallCheck(this, PoolBall);
 
-        var _this = _possibleConstructorReturn(this, (PoolBall.__proto__ || Object.getPrototypeOf(PoolBall)).call(this, name));
-
-        _this.Type = type;
-        return _this;
+        return _possibleConstructorReturn(this, (PoolBall.__proto__ || Object.getPrototypeOf(PoolBall)).call(this, name, type));
     }
 
     _createClass(PoolBall, [{

@@ -3,11 +3,12 @@
 //1 unit = 1cm
 
 /*$(document).ready(function () {
-    initPlayers();
+
 });*/
 
 var players = [],
-    currentPlayer;
+    currentPlayer,
+    otherPlayer;
 
 var container;
 
@@ -19,7 +20,9 @@ var clock;
 
 var poolTable, ballArray, holeArray, playBallStart, eightballstart;
 var startPosArray;
-var collisionArray = [];
+var collisionArray = [],
+    collisionCount;
+var ballShot = false;
 
 var windowHalfX, windowHalfY;
 
@@ -29,6 +32,7 @@ function initPlayers() {
     players[0] = new Player(player1.value, "player1");
     players[1] = new Player(player2.value, "player2");
     currentPlayer = 0;
+    otherPlayer = 1;
     $("#currentPlayer").text("It is " + players[currentPlayer].Name + "'s turn");
     updateScore(0, 0);
     updateScore(1, 0);
@@ -73,7 +77,7 @@ function init() {
 
     holeArray = [new Hole(72.5, -147.5, 1), new Hole(-72.5, -147.5, 2), new Hole(72.5, 0, 3), new Hole(-72.5, 0, 4), new Hole(72.5, 147.5, 5), new Hole(-72.5, 147.5, 6)];
 
-    ballArray = [new PlayBall(0, poolTable.children), new PoolBall(1, 1), new PoolBall(2, 1), new PoolBall(3, 1), new PoolBall(4, 1), new PoolBall(5, 1), new PoolBall(6, 1), new PoolBall(7, 1), new PoolBall(8, 8), new PoolBall(9, 2), new PoolBall(10, 2), new PoolBall(11, 2), new PoolBall(12, 2), new PoolBall(13, 2), new PoolBall(14, 2), new PoolBall(15, 2)];
+    ballArray = [new PlayBall(0, 0, poolTable.children), new PoolBall(1, 1), new PoolBall(2, 1), new PoolBall(3, 1), new PoolBall(4, 1), new PoolBall(5, 1), new PoolBall(6, 1), new PoolBall(7, 1), new PoolBall(8, 8), new PoolBall(9, 2), new PoolBall(10, 2), new PoolBall(11, 2), new PoolBall(12, 2), new PoolBall(13, 2), new PoolBall(14, 2), new PoolBall(15, 2)];
 
     playBallStart = new THREE.Vector2(0, 75);
     eightballstart = new THREE.Vector2(0, -87);
@@ -110,7 +114,14 @@ function init() {
     }
 
     window.addEventListener('resize', onWindowResize, false);
-    document.addEventListener('onPut', applyRules, false);
+    document.addEventListener('onCollision', function () {
+        collisionCount++;
+    });
+    document.addEventListener('onShoot', function () {
+        players[currentPlayer].ClearBalls();
+        ballShot = true;
+        collisionCount = 0;
+    });
 
     textureManager.onLoad = function () {
         animate();
@@ -125,6 +136,7 @@ function animate() {
 
 function render() {
     var clockDelta = clock.getDelta();
+    var player = players[currentPlayer];
 
     for (var i = 0; i < ballArray.length; i++) {
         if (ballArray[i].inScene) ballArray[i].CalcFrame(clockDelta, poolTable.children);
@@ -147,7 +159,13 @@ function render() {
                 var col = holeArray[_i4].CheckBall(ballArray[_j]);
                 if (col != null) {
                     console.log(col.name + " was deleted");
-                    //scene.remove(col.mesh);
+                    player.AddBall(col);
+                    if (col.Type != 0 && col.Type != 8) {
+                        col.inScene = false;
+                        scene.remove(col.mesh);
+                    } else {
+                        col.ResetPos();
+                    }
                 }
             }
         }
@@ -157,6 +175,10 @@ function render() {
     if (checkMovingBalls()) {
         ballArray[0].SetVisibility(false);
     } else {
+        if (ballShot == true) {
+            applyRules();
+            ballShot = false;
+        }
         ballArray[0].SetVisibility(true);
         ballArray[0].CheckKeys(keyboardControl);
         scene.remove(ballArray[0].Line);
@@ -195,7 +217,6 @@ function calcNewRot(x, y, rotation, center) {
 
 function checkMovingBalls() {
     for (var i = 0; i < ballArray.length; i++) {
-
         if (ballArray[i].speed > 0 && ballArray[i].inScene) return true;
     }
     return false;
@@ -242,33 +263,75 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function applyRules(event) {
-    var ball = event.detail;
+function applyRules() {
     var player = players[currentPlayer];
-    var otherPlayer;
-    if (currentPlayer == 0) otherPlayer = players[1];else otherPlayer = players[0];
-    if (ball.name == 0 || ball.name == 8 && player.Score != 7) {
-        ball.ResetPos();
-        switchPlayer();
-        return;
-    }
-    //Check if ball is a ball with which you can score
-    if (ball.name != 0 && ball.name != 8) {
+    var otherPlay = players[otherPlayer];
+    var ownPut = false;
+    var otherPut = false;
+    var balls = player.PuttedBalls;
+    if (balls.length > 0) {
         if (player.BallType == 0) {
-            if (ball.type == 1) {
-                player.BallType = 1;
-                otherPlayer.BallType = 0;
+            for (var i = 0; i < balls.length; i++) {
+                switch (balls[i].Type) {
+                    case 1:
+                        player.BallType = 1;
+                        otherPlay.BallType = 2;
+                        break;
+                    case 2:
+                        player.BallType = 2;
+                        otherPlay.BallType = 1;
+                        break;
+                }
+                if (balls[i].Type != 0 && balls[i].Type != 8) break;
             }
-            if (ball.type == 0) {
-                player.BallType = 0;
-                otherPlayer.BallType = 1;
+        }
+        if (player.BallType != 0) {
+            for (var _i5 = 0; _i5 < balls.length; _i5++) {
+                switch (balls[_i5].Type) {
+                    case 0:
+                        switchPlayer();
+                        break;
+                    case 8:
+                        if (player.Score != 7) {
+                            balls[_i5].ResetPos();
+                            switchPlayer();
+                        } else alert(player.Name + " Wins");
+
+                        break;
+                    case 1:
+                        if (player.BallType == 1) {
+                            updateScore(currentPlayer, 1);
+                            ownPut = true;
+                        } else if (otherPlay.BallType == 1) {
+                            updateScore(otherPlayer, 1);
+                            otherPut = true;
+                        }
+                        break;
+                    case 2:
+                        if (player.BallType == 2) {
+                            updateScore(currentPlayer, 1);
+                            ownPut = true;
+                        } else if (otherPlay.BallType == 2) {
+                            updateScore(otherPlayer, 1);
+                            otherPut = true;
+                        }
+                        break;
+                }
             }
         }
     }
+    if (otherPut && !ownPut || !ownPut) switchPlayer();
+    if (collisionCount == 0 && balls.length == 0) switchPlayer();
 }
 
 function switchPlayer() {
-    if (currentPlayer == 0) currentPlayer = 1;else if (currentPlayer == 1) currentPlayer = 0;
+    if (currentPlayer == 0) {
+        currentPlayer = 1;
+        otherPlayer = 0;
+    } else if (currentPlayer == 1) {
+        currentPlayer = 0;
+        otherPlayer = 1;
+    }
     $("#currentPlayer").text("It is " + players[currentPlayer].Name + "'s turn");
 }
 
@@ -277,6 +340,11 @@ function updateScore(playerNr, score) {
     player.BallsPut(score);
     var playerText = document.getElementById(player.ID);
     $(playerText).text(player.Name + ": " + player.Score + "/7");
+    $("#BallAssign").text(players[0].Name + ": " + TypeToString(players[0].BallType) + " " + players[1].Name + ": " + TypeToString(players[1].BallType));
+}
+
+function TypeToString(nr) {
+    if (nr == 1) return "Whole";else if (nr == 2) return "Half";else return "";
 }
 
 //# sourceMappingURL=Main-compiled.js.map

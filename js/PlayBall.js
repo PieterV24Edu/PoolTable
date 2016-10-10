@@ -1,6 +1,6 @@
 class PlayBall extends Ball {
-    constructor(name, tableGroup) {
-        super(name);
+    constructor(name, type, tableGroup) {
+        super(name, type);
 
         this.PowerDirection = true;
         this.tableGroup = tableGroup;
@@ -34,6 +34,8 @@ class PlayBall extends Ball {
 
         this.Line = new THREE.Line(this.LineGeo, this.LineMat);
         this.Line.geometry.dynamic = true;
+
+        this.ShootEvent = new Event('onShoot');
     }
 
     SetVisibility(state)
@@ -45,7 +47,7 @@ class PlayBall extends Ball {
     CheckKeys(controller)
     {
         if(this.ceu.visible) {
-            var rot = 0.1 * Math.PI / 180;
+            var rot = (parseInt($("#Display").text())/10) * Math.PI / 180;
             if (controller.GetKey("a")) {
                 this.ceu.rotateY(rot);
                 this.CeuDirection.rotateAround(new THREE.Vector2(0, 0), -rot);
@@ -57,6 +59,7 @@ class PlayBall extends Ball {
             if(controller.GetKey("space"))
             {
                 this.StartMoving(this.CeuDirection, this.PowerCube.scale.y * 300);
+                document.dispatchEvent(this.ShootEvent);
             }
         }
     }

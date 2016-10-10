@@ -21,7 +21,7 @@ canvas
 #dPadContainer
 {
     width: 170px;
-    height: 115px;
+    height: 170px;
     background-color: #e0e0e0;
     position: absolute;
     bottom: 0;
@@ -60,6 +60,11 @@ canvas
     background-color: #00FF00;
 }
 
+.ceuRotSpeedPad
+{
+    background-color: #00CC00;
+}
+
 .glyphicon{
     font-size: 50px;
     color: #000000;
@@ -67,38 +72,59 @@ canvas
 
 #dPad1
 {
-    top: 5px;
+    top: 60px;
     left: 5px;
 }
 
 #dPad2
 {
-    top: 5px;
+    top: 60px;
     left: 115px;
 }
 
 #dPad3
 {
-    top: 60px;
+    top: 115px;
     left: 5px;
 }
 
 #dPad4
 {
-    top: 60px;
+    top: 115px;
     left: 115px;
 }
 
 #dPad5
 {
-    top: 5px;
+    top: 60px;
     left: 60px;
 }
 
 #dPad6
 {
-    top: 60px;
+    top: 115px;
     left: 60px;
+}
+
+#dPad7
+{
+    top: 5px;
+    left: 5px;
+}
+
+#dPad8
+{
+    top: 5px;
+    left: 115px;
+}
+
+#Display
+{
+    top: 5px;
+    left: 60px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 20px;
 }
 
 #shootButton

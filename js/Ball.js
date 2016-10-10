@@ -1,11 +1,13 @@
 class Ball
 {
-    constructor(name)
+    constructor(name, type)
     {
         this.name = name;
+        this.Type = type;
         this.inScene = true;
         this.startPos = null;
         this.Radius = 2.85;
+
         this.Geometry = new THREE.SphereGeometry(this.Radius, 32, 32);
         this.Material = new THREE.MeshPhongMaterial({color: 0xFFFFFF});
         this.Mesh = new THREE.Mesh(this.Geometry, this.Material);
@@ -21,6 +23,7 @@ class Ball
         this.Mesh.receiveShadow = true;
 
         this.rayCaster = new THREE.Raycaster();
+        this.CollisionEvent = new Event("onCollision");
     }
 
     CalcFrame(delta, tableGroup)
@@ -58,6 +61,7 @@ class Ball
             if(intersection.distance < 3 || directionSpeed > intersection.distance) {
                 this.Direction.reflect(intersection.face.normal);
                 this.UpdateCurrentSpeed(delta);
+                document.dispatchEvent(this.CollisionEvent);
             }
         }
     }

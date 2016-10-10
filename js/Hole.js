@@ -19,8 +19,6 @@ class Hole
         var distance = this.HoleMesh.position.distanceTo(ball.position);
         if(distance < ball.Radius + this.Radius)
         {
-            var PutEvent = new CustomEvent("onPut", {'detail': ball});
-            document.dispatchEvent(PutEvent);
             return ball;
         }
         return null;
