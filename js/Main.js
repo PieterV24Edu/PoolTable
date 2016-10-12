@@ -119,7 +119,7 @@ function init() {
 
         //Populate collision array
         var tempArray = [];
-        for(let j = 0 + i; j < ballArray.length; j++)
+        for(let j = i + 1; j < ballArray.length; j++)
         {
             tempArray[j] = false;
         }
@@ -353,7 +353,7 @@ function applyRules() {
                         switchPlayer();
                         break;
                     case 8:
-                        if (player.Score != 7) {
+                        if (player.Score >= 7) {
                             balls[i].ResetPos();
                             switchPlayer();
                         }

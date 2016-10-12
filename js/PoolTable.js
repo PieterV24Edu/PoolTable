@@ -7,11 +7,9 @@ class PoolTable
         var borderMat = new THREE.MeshLambertMaterial({color: 0x00FF00});
         var holeMat = new THREE.MeshLambertMaterial({color: 0x000000});
         var floorMat = new THREE.MeshLambertMaterial({color: 0x016903});
-        var wireFrame = new THREE.MeshBasicMaterial({wireframe: true, wireframeLinewidth: 2});
 
         var longGeo = new THREE.BoxGeometry(10,8,320);
         var shortGeo = new THREE.BoxGeometry(170, 8, 10);
-        var holeGeo = new THREE.CircleGeometry(5);
         var floorGeo = new THREE.BoxGeometry(150, 2, 300);
 
         var floorMesh = new THREE.Mesh(floorGeo, floorMat);
@@ -43,16 +41,11 @@ class PoolTable
         shortClose.castShadow = true;
         shortClose.receiveShadow = true;
 
-        var cylinder = new THREE.Mesh(holeGeo, holeMat);
-        cylinder.position.x = 75;
-        cylinder.position.y = 3.6;
-
         this.tableGroup.add(floorMesh);
         this.tableGroup.add(longLeft);
         this.tableGroup.add(longRight);
         this.tableGroup.add(shortFar);
         this.tableGroup.add(shortClose);
-        //this.tableGroup.add(cylinder);
     }
 
     get mesh()

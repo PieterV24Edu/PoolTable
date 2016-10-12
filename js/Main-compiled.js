@@ -21,7 +21,7 @@ var clock;
 var poolTable, ballArray, holeArray, playBallStart, eightballstart;
 var startPosArray;
 var collisionArray = [],
-    collisionCount;
+    collisionCount
 var ballShot = false;
 
 var windowHalfX, windowHalfY;
@@ -92,7 +92,7 @@ function init() {
 
         //Populate collision array
         var tempArray = [];
-        for (var j = 0 + i; j < ballArray.length; j++) {
+        for (var j = i + 1; j < ballArray.length; j++) {
             tempArray[j] = false;
         }
         collisionArray[i] = tempArray;
@@ -292,7 +292,7 @@ function applyRules() {
                         switchPlayer();
                         break;
                     case 8:
-                        if (player.Score != 7) {
+                        if (player.Score >= 7) {
                             balls[_i5].ResetPos();
                             switchPlayer();
                         } else alert(player.Name + " Wins");
